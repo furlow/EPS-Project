@@ -131,7 +131,7 @@ try:
 		list = bluetooth_comms()
 		
 		if(list[2]== '1'):
-		#function to turn on alarm
+			alarmon()							#function to turn on alarm
 		
 		if(list[3]== '1'):
 			lighton()
