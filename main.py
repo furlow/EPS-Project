@@ -10,13 +10,13 @@ try:
 
         blue_comms = bluetooth_comms(list)
 
-	print list	
+        print list      
 
         blue_comms.start()
 
-	print list
+        print list
 
-        push_init()                 #initiates the push button
+        alarm1 = alarm()
         
         # need to create function to set the time
     
@@ -24,18 +24,18 @@ try:
 
         while 1:
 
-		print "position 2"
+                print "position 2"
                 
                 if(list[2]== 1):
                         #there needs to be a function to compare time before alarm is turned on
                         print "Turning alarm on"
-                        alarmon(list)                                                       #function to turn on alarm
+                        alarm1.alarmon(list)                                                       #function to turn on alarm
 
                 if(list[3]== 1):
-                        lighton()
+                        alarm1.lighton()
 
                 if(list[3]== 0):
-                        lightoff()
+                        alarm1.lightoff()
                         
                 if (GPIO.input(22)== 1):          #if button is pressed
                         if (list[3]== 1):         #and light is on
