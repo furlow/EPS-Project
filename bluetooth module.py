@@ -1,53 +1,53 @@
-# thread_bluetooth_comms.py
 import threading
 import time
-import bluetooth from *
+from bluetooth import *
 
+class bluetooth_comms(threading.Thread):
+    def __init__(self, data):
+        threading.Thread.__init__(self)
 
-# THIS ISNT COMPLETED YET... THIS IS THE BIT I DONT UNDERSTAND SOZ
-
-class thread_bluetooth_comms(threading.Thread):
-    def bluetooth_comms():
+        self.data = data
+        self.keepalive = True
+        
+        port = 5
+        backlog = 1
             
-            port = 5
-            backlog = 1
-            
-            server_sock=BluetoothSocket( RFCOMM )
-            server_sock.bind(("",port))
-            server_sock.listen(backlog)
+        self.server_sock=BluetoothSocket( RFCOMM )
+        self.server_sock.bind(("",port))
+        self.server_sock.listen(backlog)
 
-            uuid = "df0677bc-5f0b-45e4-8207-122adee18805"
+        uuid = "df0677bc-5f0b-45e4-8207-122adee18805"
+        
+        advertise_service( self.server_sock, "alarm",
+                            service_id = uuid,
+                            service_classes = [ uuid, SERIAL_PORT_CLASS],
+                            profiles = [SERIAL_PORT_PROFILE])
 
-            try:
-                    
-                    advertise_service( server_sock, "alarm",
-                                                            service_id = uuid,
-                                                            service_classes = [ uuid, SERIAL_PORT_CLASS],
-                                                            profiles = [SERIAL_PORT_PROFILE])
-                                                            
-                    print "waiting for connection..."
-                    
-    #		client_sock, client_info = server_sock.accept()
-    #		print "Accepted connection from ", client_info
+    def run(self):
 
-                    print "waiting for data..."
-                    
-    #		data = client_sock.recv(1024)
+        while(self.keepalive):
 
-                    data = "1910;1912;1;0";
-                    current_time = data[0:4];
-                    alarm_time = data[5:9];
-                    alarm = data[10];
-                    light = data[12];
-    #		client_sock.send ("data sent")
-                    List = [int(current_time),int(alarm_time),int(alarm),int(light)]
-                    
-                    print List
-                    
-            except keyboardInterrupt:
-                    
-                    stop_advertising (server_sock)        
-                    client_sock.close()
-                    server_sock.close()
-                    
-            return List
+            print "waiting for connection..."
+            client_sock, client_info = self.server_sock.accept()
+            print "Accepted connection from ", client_info
+
+            print "waiting for data..."
+            raw_data = client_sock.recv(1024)
+
+            #data = "1910;1912;1;0";
+            current_time = raw_data[0:4];
+            alarm_time = raw_data[5:9];
+            alarm = raw_data[10];
+            light = raw_data[12];
+            client_sock.send ("data sent")
+            data = [int(current_time),int(alarm_time),int(alarm),int(light)]
+            print data
+
+        stop_advertising (self.server_sock)
+        client_sock.close()
+        self.server_sock.close()
+
+    def stop(self):
+        
+        self.keepalive = False            
+
