@@ -40,15 +40,16 @@ class bluetooth_comms(threading.Thread):
             alarm_time = raw_data[5:9];
             alarm = raw_data[10];
             light = raw_data[12];
+            self.data[2] = 1 #all the above lines need to be changed to this format
             #client_sock.send ("data sent")
-            self.data = [int(current_time),int(alarm_time),int(alarm),int(light)]
+            #self.data = [int(current_time),int(alarm_time),int(alarm),int(light)]
             print self.data
 
         #stop_advertising (self.server_sock)
         #client_sock.close()
         #self.server_sock.close()
 
-    def stop(self):
-        
-        self.keepalive = False
+    #def stop(self):
+    #    
+    #    self.keepalive = False
 

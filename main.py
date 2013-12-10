@@ -3,29 +3,27 @@
 import RPi.GPIO as GPIO 
 from alarmmodules import *
 from bluetooth_module import *
+from time import sleep
 
 try:
 
-        list= [0,0,0,0]
+        list = [0,0,0,0]
 
         blue_comms = bluetooth_comms(list)
 
-        print list      
+        print "In Main ", list      
 
         blue_comms.start()
 
-        print list
+        print "In Main ", list
 
         alarm1 = alarm()
-        
-        # need to create function to set the time
-    
-        print "position 1"
 
         while 1:
-
-                print "position 2"
                 
+                sleep(3)
+		print "In Main ", list
+
                 if(list[2]== 1):
                         #there needs to be a function to compare time before alarm is turned on
                         print "Turning alarm on"
@@ -34,8 +32,8 @@ try:
                 if(list[3]== 1):
                         alarm1.lighton()
 
-                if(list[3]== 0):
-                        alarm1.lightoff()
+                #if(list[3]== 0):
+                #        alarm1.lightoff()
                         
                 if (GPIO.input(22)== 1):          #if button is pressed
                         if (list[3]== 1):         #and light is on

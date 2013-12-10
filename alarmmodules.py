@@ -27,7 +27,7 @@ class alarm():
                 print "Dutycycle set to 0"
                 return
 
-        def alarmoff():
+        def alarmoff(self):
                 self.p.stop()                                                                                                        # Stop PWM                                                                                        # Changes all channels used by script back to inputs.
                 self.channelA.stop()
                 self.a=0
@@ -35,12 +35,12 @@ class alarm():
                 return
 
 
-        def alarmon(list):
+        def alarmon(self, list):
                 
-                print list
+                print "In Alarm ", list
                 self.channelA.set_volume(0.0)                                                                                                        #test
-                self.channelA.play(sound, -1)
-                j=0.01
+                self.channelA.play(self.sound, -1)
+                j=1
                 #turn on leds
 
                 self.p.start(0)                                                                                                      # Start PWM with duty cycle of 0.
@@ -52,8 +52,8 @@ class alarm():
                                 
                                 self.channelA.set_volume(j)
                                 self.p.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
-                                j=j+0.01
-                                time.sleep(50)                                                                          # Delays the code for 60secs.
+                                #j=j+0.01
+                                sleep(50)                                                                          # Delays the code for 60secs.
                                 self.a=1
                                 
                                 if dutycycle == '100':                                                          # If dutycycle reaches maximium
@@ -65,7 +65,7 @@ class alarm():
                                                                                                         # time.sleep(1800)                                                                      # Then delay by 30mins/ stay on until turned off 
                                                         
                 except KeyboardInterrupt:
-                        pass
+                        raise
                         
                 return
 
