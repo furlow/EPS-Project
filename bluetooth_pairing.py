@@ -23,9 +23,10 @@ class bluetooth_pairing(threading.Thread):
 		self.capability = "KeyboardDisplay"
 		self.path = "/test/agent"
 		dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-		manager = dbus.Interface(dbus.SystemBus().get_object("org.bluez", "/"), "org.bluez.Manager")
+		self.bus = dbus.SystemBus()
+		manager = dbus.Interface(self.bus.get_object("org.bluez", "/"), "org.bluez.Manager")
 		path = manager.DefaultAdapter() #gets the path of the default bluetooth device
-		self.adapter = dbus.Interface(dbus.SystemBus().get_object("org.bluez", path), "org.bluez.Adapter")
+		self.adapter = dbus.Interface(self.bus.get_object("org.bluez", path), "org.bluez.Adapter")
 		
 	def run(self):
 		
