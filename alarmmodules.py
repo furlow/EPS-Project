@@ -20,6 +20,7 @@ def lightoff():
         
         GPIO.setmode(GPIO.BOARD)                                                                        # Set pin convention.
         GPIO.setwarnings(False)
+        p = GPIO.PWM(13, 100)
         p.stop()                                                                                                        # Stop PWM
         #GPIO.cleanup()                                                                                         # Changes all channels used by script back to inputs.
         
@@ -31,6 +32,7 @@ def alarmoff():
 
         GPIO.setmode(GPIO.BOARD)                                                                        # Set pin convention.
         GPIO.setwarnings(False)
+        p = GPIO.PWM(13, 100)
         p.stop()                                                                                                        # Stop PWM
         #GPIO.cleanup()                                                                                         # Changes all channels used by script back to inputs.
         channelA.stop()
@@ -43,6 +45,9 @@ def alarmoff():
 
 def alarmon(list):
         
+
+	print list
+
         pygame.mixer.init(22050,-16,1,4096)                                                                                             # Initiate pygame module.
         sound = pygame.mixer.Sound("Play Hard.wav")     #need to make track as long as gradual wake up?
         channelA = pygame.mixer.Channel(1)

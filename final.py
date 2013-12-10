@@ -3,7 +3,7 @@ from time import sleep
 import os
 import pygame
 from bluetooth import *
-import RPi.GPIO as GPIO	
+import RPi.GPIO as GPIO
 
 def bluetooth_comms():
 	
