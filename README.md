@@ -10,11 +10,15 @@ Installation of code onto raspberry pi
 
 To install you will first need to install bluez and python-bluetooth (py-bluez) packages
 
-	sudo apt-get install bluez python-bluetooth
+	sudo apt-get install bluez bluez-utils python-bluetooth
+	
+Make sure the install script is executable;
+
+	sudo chmod +x install.sh
 
 To install the natures alarm program;
 
-	sudo python install.py
+	sudo ./install.sh
 
 Checking the service is running
 ===============================
@@ -33,6 +37,3 @@ To stop use;
 To start use;
 
 	sudo service natures-alarm start
-
-
-alex chu
