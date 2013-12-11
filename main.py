@@ -10,6 +10,7 @@ try:
         list = [0,0,0,0]
 
         blue_comms = bluetooth_comms(list)
+	blue_comms.daemon = True
 
         print "In Main ", list      
 
@@ -43,3 +44,5 @@ try:
                 
 except KeyboardInterrupt:
         blue_comms.stop()
+	alarm1.close()
+	raise
