@@ -30,7 +30,7 @@ class alarm():
         def alarmoff(self):
                 self.light.stop()
                 self.channelA.stop()
-                #self.a=0 #what does this line do?
+                self.a=0 #what does this line do?
                 print "Alarm has been turned off"
                 return
 
@@ -51,7 +51,7 @@ class alarm():
                         for dutycycle in range(0, 101, 1):                                      # Use dutycycle of 0,5,10,15,20....100.         IS THIS ':' NEEDED?
                                 
                                 self.channelA.set_volume(volume)
-                                self.p.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
+                                self.light.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
                                 #volume=volume+0.01
                                 sleep(50)                                                                          # Delays the code for 60secs.
                                 self.a=1
@@ -65,7 +65,7 @@ class alarm():
                                                                                                         # time.sleep(1800)                                                                      # Then delay by 30mins/ stay on until turned off 
                                                         
                 except KeyboardInterrupt:
-                    close()
+                    self.close()
                     raise
                         
                 return
@@ -73,5 +73,5 @@ class alarm():
         def close(self):
                 self.channelA.stop()
                 pygame.mixer.quit()
-
+		return
 
