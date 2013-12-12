@@ -1,15 +1,26 @@
-!#/bin/sh
+#!/bin/sh
+
+#File names and directories
+install_dir='/opt/EPS-Project/'
+LSB_Script='natures-alarm'
+main_prog='natures-alarm.py'
+init_dir='/etc/init.d/'
 
 #This needs to be run as root
 
 #copy the files to installation directories
-echo "Creating Directories\n"
-mkdir /opt/EPS-Project/
-echo "Copying files\n"
-cp src/* /opt/EPS-project/
-cp init.d/ /etc/init.d/
+echo "Creating installation directories"
+mkdir $install_dir
 
-update-d.rc natures-alarm.sh defaults
+echo "Copying files"
+cp src/* $install_dir
+cp init/* $init_dir
+
+echo "Setting file permissions"
+chmod +x $init_dir/$LSB_Script
+chmod +x $install_dir/$main_prog
+
+update-rc.d $LSB_Script defaults
 
 echo "Installation Complete"
 
