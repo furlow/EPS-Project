@@ -8,6 +8,10 @@ init_dir='/etc/init.d/'
 
 #This needs to be run as root
 
+#Attempt to install dependencies for natures-alarm
+
+apt-get install bluez python-bluetooth gobject
+
 #copy the files to installation directories
 echo "Creating installation directories"
 mkdir $install_dir
@@ -25,4 +29,4 @@ update-rc.d $LSB_Script defaults
 echo "Installation Complete"
 
 echo "Natures-alarm will auto start on reboot"
-echo "To Start now type "sudo service natures-alarm start" in terminal"
+echo "To Start now type 'sudo service natures-alarm start' in terminal"
