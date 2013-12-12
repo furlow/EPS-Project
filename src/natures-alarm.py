@@ -1,4 +1,4 @@
-#main.py
+#!/usr/bin/python
 
 import RPi.GPIO as GPIO 
 from alarmmodules import *

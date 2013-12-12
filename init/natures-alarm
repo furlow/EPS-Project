@@ -14,7 +14,7 @@
 # Process name ( For display )
 NAME=natures-alarm
 # Daemon name, where is the actual executable
-DAEMON=/home/pi/natures-alarm
+DAEMON=/opt/EPS-Project/natures-alarm.py
 # pid file for the daemon
 PIDFILE=/var/run/natures-alarm.pid
 
