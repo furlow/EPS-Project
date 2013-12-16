@@ -28,26 +28,27 @@ class bluetooth_comms(threading.Thread):
 
 	try:
         
+
 		while(True):
 
 			print "waiting for connection..."
-            		sleep(2)
             		self.client_sock, client_info = self.server_sock.accept()
 			
-			print "Accepted connection from "#, client_info
-            		sleep(2)
+			print "Accepted connection from ", client_info
             		print "waiting for data..."
             		raw_data = self.client_sock.recv(1024)
 
-            		raw_data = "1910;1912;1;0";
-            		current_time = raw_data[0:4];
-            		alarm_time = raw_data[5:9];
-            		alarm = raw_data[10];
-            		light = raw_data[12];
-            		self.data[2] = 1 #all the above lines need to be changed to this format
+            		#raw_data = "1910;1912;1;0";
+            		self.data[0] = int(raw_data[0:4])
+            		self.data[1] = int(raw_data[5:9])
+            		self.data[2] = int(raw_data[10])
+            		#light = raw_data[12];
+                        self.data[3]= int(raw_data[12])
+            		#self.data[2] = 1 #all the above lines need to be changed to this format
             		self.client_sock.send ("data sent")
             		#self.data = [int(current_time),int(alarm_time),int(alarm),int(light)]
             		print self.data
+			self.client_sock.close()
 
 	except KeyboardInterrupt:
 		self.stop()
