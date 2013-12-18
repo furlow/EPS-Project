@@ -14,7 +14,7 @@ class alarm():
                 GPIO.setup(22, GPIO.IN, initial= GPIO.LOW)
                 
                 pygame.mixer.init(22050,-16,1,4096)                                                                                       # Initiate pygame module.
-                self.sound = pygame.mixer.Sound("Play Hard.wav")     #need to make track as long as gradual wake up?
+                self.sound = pygame.mixer.Sound("Music/Play Hard.wav")     #need to make track as long as gradual wake up?
                 self.channelA = pygame.mixer.Channel(1)
         
         def lighton(self):                                                   # Channel=13, Frequency=100Hz.
@@ -28,20 +28,59 @@ class alarm():
                 return
 
         def alarmoff(self):
+                volume=1
+                
+                for dutycycle in range(101,0,1):                                      # Use dutycycle of 0,5,10,15,20....100.         IS THIS ':' NEEDED?
+                                
+                                self.channelA.set_volume(volume)
+                                self.light.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
+                                volume=volume-0.01
+                                sleep(0.1)                                                                          # Delays the code for 60secs.
+
                 self.light.stop()
                 self.channelA.stop()
-                self.a=0 #what does this line do?
+                self.a=0 #what does this line do?    - its to escape the loop when this function returns to alarmon
                 print "Alarm has been turned off"
                 return
 
+        def comparetime (self, list):
+                print "In Comparetime "
+                self.differenceintime= list[1]-list[0]
+
+                print 'Alarm will go off in' 
+                print self.differenceintime
+                print 
+                self.dmins =self.differenceintime%100
+                self.dhour = (self.differenceintime-self.dmins)/ 100
+
+                print 'Alarm will go off in'
+                print self.dhour
+                print 'hours and' 
+                print self.dmins 
+                print 'minutes!'
+                print
+                self.totalmins= self.dmins+ (self.dhour*60)
+
+                print 'Alarm will go off in' 
+                print self.totalmins 
+                print 'minutes.'
+                print 
+                self.totalsecs= self.totalmins *60
+
+                print 'Alarm will go off in' 
+                print self.totalsecs
+                print 'seconds.'
+                print 
+                return totalsecs
+
 
         def alarmon(self, list):
-                
+
                 print "In Alarm ", list
+                
                 self.channelA.set_volume(0.0)                                                                                                        #test
                 self.channelA.play(self.sound, -1)
-                volume=1
-                #turn on leds
+                volume=0
 
                 self.light.start(0)                                                                                                      # Start PWM with duty cycle of 0.
 
@@ -52,7 +91,7 @@ class alarm():
                                 
                                 self.channelA.set_volume(volume)
                                 self.light.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
-                                #volume=volume+0.01
+                                volume=volume+0.01
                                 sleep(50)                                                                          # Delays the code for 60secs.
                                 self.a=1
                                 
@@ -73,5 +112,4 @@ class alarm():
         def close(self):
                 self.channelA.stop()
                 pygame.mixer.quit()
-		return
-
+                return

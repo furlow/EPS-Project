@@ -4,13 +4,14 @@ import RPi.GPIO as GPIO
 from alarmmodules import *
 from bluetooth_module import *
 from time import sleep
+from threading import Timer
 
 try:
 
         list = [0,0,0,0]
 
         blue_comms = bluetooth_comms(list)
-	blue_comms.daemon = True
+        blue_comms.daemon = True
 
         print "In Main ", list      
 
@@ -23,12 +24,14 @@ try:
         while 1:
                 
                 sleep(3)
-		print "In Main ", list
+                print "In Main ", list
 
                 if(list[2]== 1):
-                        #there needs to be a function to compare time before alarm is turned on
+                        alarm1.comparetime(list)
+                        print "Totalsecs in main is", totalsecs
+                        t= Timer (totalsecs,alarm1.alarmon(list))
                         print "Turning alarm on"
-                        alarm1.alarmon(list)                                                       #function to turn on alarm
+                        t.start()                                                      #function to turn on alarm
 
                 if(list[3]== 1):
                         alarm1.lighton()
@@ -44,5 +47,5 @@ try:
                 
 except KeyboardInterrupt:
         blue_comms.stop()
-	alarm1.close()
-	raise
+        alarm1.close()
+        raise
