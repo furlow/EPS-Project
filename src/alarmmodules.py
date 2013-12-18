@@ -71,7 +71,7 @@ class alarm():
                 print self.totalsecs
                 print 'seconds.'
                 print 
-                return totalsecs
+                return self.totalsecs
 
 
         def alarmon(self, list):
@@ -80,7 +80,7 @@ class alarm():
                 
                 self.channelA.set_volume(0.0)                                                                                                        #test
                 self.channelA.play(self.sound, -1)
-                volume=0
+                volume=1
 
                 self.light.start(0)                                                                                                      # Start PWM with duty cycle of 0.
 
@@ -91,8 +91,8 @@ class alarm():
                                 
                                 self.channelA.set_volume(volume)
                                 self.light.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
-                                volume=volume+0.01
-                                sleep(50)                                                                          # Delays the code for 60secs.
+                                # volume=volume+0.01
+                                sleep(1)                                                                          # Delays the code for 60secs.
                                 self.a=1
                                 
                                 if dutycycle == '100':                                                          # If dutycycle reaches maximium
