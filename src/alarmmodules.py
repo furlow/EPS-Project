@@ -5,13 +5,18 @@ import pygame
 import RPi.GPIO as GPIO 
 
 class alarm():
-        def __init__(self):
+        def __init__(self, list, BUTTON_IN_PIN, LED_OUT_PIN):
+
+		self.LED_OUT_PIN = LED_OUT_PIN
+		self.BUTTON_IN_PIN = BUTTON_IN_PIN
+		self.list = list
+
                 GPIO.setmode(GPIO.BOARD)                                                                        # Set pin convention.
                 GPIO.setwarnings(False)
-                GPIO.setup(13, GPIO.OUT, initial= GPIO.LOW)                                     # Set up channel 13 to be output and set the output to low.
-                self.light = GPIO.PWM(13, 100)
+                GPIO.setup(self.LED_OUT_PIN, GPIO.OUT, initial = GPIO.LOW)                                     # Set up channel 13 to be output and set the output to low.
+                self.light = GPIO.PWM(self.LED_OUT_PIN, 100)
 
-                GPIO.setup(22, GPIO.IN, initial= GPIO.LOW)
+                GPIO.setup(self.BUTTON_IN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
                 
                 pygame.mixer.init(22050,-16,1,4096)                                                                                       # Initiate pygame module.
                 self.sound = pygame.mixer.Sound("Music/Play Hard.wav")     #need to make track as long as gradual wake up?
@@ -43,15 +48,15 @@ class alarm():
                 print "Alarm has been turned off"
                 return
 
-        def comparetime (self, list):
+        def comparetime (self):
                 print "In Comparetime "
-                self.differenceintime= list[1]-list[0]
+                self.differenceintime= self.list[1] - self.list[0]
 
                 print 'Alarm will go off in' 
                 print self.differenceintime
                 print 
-                self.dmins =self.differenceintime%100
-                self.dhour = (self.differenceintime-self.dmins)/ 100
+                self.dmins = self.differenceintime % 100
+                self.dhour = ( self.differenceintime - self.dmins ) / 100
 
                 print 'Alarm will go off in'
                 print self.dhour
@@ -59,13 +64,13 @@ class alarm():
                 print self.dmins 
                 print 'minutes!'
                 print
-                self.totalmins= self.dmins+ (self.dhour*60)
+                self.totalmins= self.dmins + ( self.dhour * 60 )
 
                 print 'Alarm will go off in' 
                 print self.totalmins 
                 print 'minutes.'
                 print 
-                self.totalsecs= self.totalmins *60
+                self.totalsecs = self.totalmins * 60
 
                 print 'Alarm will go off in' 
                 print self.totalsecs
@@ -74,7 +79,7 @@ class alarm():
                 return self.totalsecs
 
 
-        def alarmon(self, list):
+        def alarmon(self):
 
                 print "In Alarm ", list
                 
@@ -99,7 +104,7 @@ class alarm():
                                 
                                         while self.a:                                                        #track plays on replay
                                                 
-                                                if list[2] == '0':
+                                                if self.list[2] == '0':
                                                         alarmoff()
                                                                                                         # time.sleep(1800)                                                                      # Then delay by 30mins/ stay on until turned off 
                                                         
