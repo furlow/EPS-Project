@@ -40,6 +40,8 @@ class bluetooth_pairing(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
+	self.mainloop = gobject.MainLoop()
+
     
     #This is run by using the start() function for an instance of bluetooth_pairing
     def run(self):
@@ -54,7 +56,6 @@ class bluetooth_pairing(threading.Thread):
         adapther_path = manager.DefaultAdapter() #gets the path of the default bluetooth device
         self.adapter = dbus.Interface(self.bus.get_object("org.bluez", adapther_path), "org.bluez.Adapter")
 
-        mainloop = gobject.MainLoop()
         agent = Agent(self.bus, self.path)
 
         self.adapter.Discoverable = True
@@ -62,7 +63,11 @@ class bluetooth_pairing(threading.Thread):
                            self.capability)
                            
         print "Ready to pair"
-        mainloop.run()
+        self.mainloop.run()
+
+    def stop(self):
+	self.mainloop.quit()
+	print "Exited pairing mode"
 
 # Need to come up with a way in which the mainloop will quit, using the Thread quit method is okay.
 # However We can run the thread when the button is pressed down for 3 seconds. When a succesfull pair
