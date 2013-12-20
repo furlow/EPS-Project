@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/python
 
 import RPi.GPIO as GPIO 
 from alarmmodules import *
@@ -42,9 +42,10 @@ try:
                 if(list[2] == 1):
                         totalsecs = alarm1.comparetime()
                         print "Totalsecs in main is", totalsecs
-                        t= Timer ( int(totalsecs), alarm1.alarmon())
+                        t= Timer ( int(totalsecs), alarm1.alarmon)
                         print "Turning alarm on"
                         t.start()                                                      #function to turn on alarm
+			list[2] = 0
 
                 if(list[3] == 1):
                         alarm1.lighton()
@@ -58,15 +59,15 @@ try:
 			print "The Button was pressed"
                         if(list[3] == 1):
 				print "Turning Light off"         #and light is on
-				pairing.stop()
-				if(not pairing.isAlive()):
-					print "Pairing stopped"
+				#pairing.stop()
+				#if(not pairing.isAlive()):
+				#	print "Pairing stopped"
                                 list[3] = 0        #then turn off light
                         else:
 				print "Turning Light on"         #but if light is off
-				pairing = bluetooth_pairing()
-				pairing.daemon = True
-				pairing.start()
+				#pairing = bluetooth_pairing()
+				#pairing.daemon = True
+				#pairing.start()
                                 list[3] = 1        #then turn on light
                 
 except KeyboardInterrupt:
