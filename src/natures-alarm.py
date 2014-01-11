@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import RPi.GPIO as GPIO 
 from alarmmodules import *
@@ -15,14 +15,15 @@ BUTTON_IN_PIN = 22
 try:
 
         list = [0,0,0,0]
+	list = [114,700,1,0]
 	
 	#Start the pairing thread
 	pairing = bluetooth_pairing()
 
 	#Start the bluetooth communications thread
-        blue_comms = bluetooth_comms(list)
-        blue_comms.daemon = True
-        blue_comms.start()
+        #blue_comms = bluetooth_comms(list)
+        #blue_comms.daemon = True
+        #blue_comms.start()
 
         print "In Main ", list
 
@@ -32,7 +33,7 @@ try:
 	print "Current totalsecs is 0"
 
         while 1:
-                sleep(0.1)
+                sleep(5)
                 print "In Main ", list
 
 		if(pairing.isAlive()):
@@ -42,16 +43,17 @@ try:
                 if(list[2] == 1):
                         totalsecs = alarm1.comparetime()
                         print "Totalsecs in main is", totalsecs
-                        t= Timer ( int(totalsecs), alarm1.alarmon)
+                        t = Timer ( totalsecs, alarm1.alarmon )
+			t.daemon = True
                         print "Turning alarm on"
                         t.start()                                                      #function to turn on alarm
 			list[2] = 0
 
-                if(list[3] == 1):
-                        alarm1.lighton()
+                #if(list[3] == 1):
+                #        alarm1.lighton()
 
-                if(list[3] == 0):
-                        alarm1.lightoff()
+                #if(list[3] == 0):
+                #        alarm1.lightoff()
                       
 		button_value = GPIO.input(BUTTON_IN_PIN)          #if button is pressed
  		print "Button Value is ", button_value
@@ -71,6 +73,6 @@ try:
                                 list[3] = 1        #then turn on light
                 
 except KeyboardInterrupt:
-        blue_comms.stop()
+        #blue_comms.stop()
         alarm1.close()
         raise
