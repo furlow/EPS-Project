@@ -15,6 +15,7 @@ class alarm():
                 GPIO.setwarnings(False)
                 GPIO.setup(self.LED_OUT_PIN, GPIO.OUT, initial = GPIO.LOW)                                     # Set up channel 13 to be output and set the output to low.
                 self.light = GPIO.PWM(self.LED_OUT_PIN, 100)
+		self.light.start(0)
 
                 GPIO.setup(self.BUTTON_IN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
                 
@@ -23,12 +24,12 @@ class alarm():
                 self.channelA = pygame.mixer.Channel(1)
         
         def lighton(self):                                                   # Channel=13, Frequency=100Hz.
-                self.light.start(100)                                                                                            # Set duty cycle to 100.
+                self.light.ChangeDutyCycle(100)                                                                                            # Set duty cycle to 100.
                 print "Dutycycle set to 100"
                 return
 
         def lightoff(self):
-                self.light.stop()                                                                                                        # Stop PWM                                                                                         # Changes all channels used by script back to inputs.
+                self.light.ChangeDutyCycle(0)                                                                                                        # Stop PWM                                                                                         # Changes all channels used by script back to inputs.
                 print "Dutycycle set to 0"
                 return
 
@@ -64,7 +65,7 @@ class alarm():
                 print self.dmins 
                 print 'minutes!'
                 print
-                self.totalmins= self.dmins + ( self.dhour * 60 )
+                self.totalmins = self.dmins + ( self.dhour * 60 )
 
                 print 'Alarm will go off in' 
                 print self.totalmins 
@@ -81,31 +82,26 @@ class alarm():
 
         def alarmon(self):
 
-                print "In Alarm ", list
+                print "In Alarm ", self.list
                 
                 self.channelA.set_volume(0.0)                                                                                                        #test
                 self.channelA.play(self.sound, -1)
                 volume=1
 
-                self.light.start(0)                                                                                                      # Start PWM with duty cycle of 0.
-
                 print "Turning on the LEDs and Audio"
 
                 try:
-                        for dutycycle in range(0, 101, 1):                                      # Use dutycycle of 0,5,10,15,20....100.         IS THIS ':' NEEDED?
-                                
-                                self.channelA.set_volume(volume)
+                        for dutycycle in range(1, 101):                                      # Use dutycycle of 0,5,10,15,20....100.         IS THIS ':' NEEDED?
+                                #self.channelA.set_volume(volume)
                                 self.light.ChangeDutyCycle(dutycycle)                                    # Change dutycycle.
                                 # volume=volume+0.01
-                                sleep(1)                                                                          # Delays the code for 60secs.
-                                self.a=1
-                                
-                                if dutycycle == '100':                                                          # If dutycycle reaches maximium
-                                
-                                        while self.a:                                                        #track plays on replay
-                                                
-                                                if self.list[2] == '0':
-                                                        alarmoff()
+                                sleep(20)                                                                          # Delays the code for 60secs.
+                        
+			self.a=1
+                        if dutycycle == '100':                                                          # If dutycycle reaches maximium
+                                while self.a:                                                        #track plays on replay
+                                	if self.list[2] == '0':
+                                        	alarmoff()
                                                                                                         # time.sleep(1800)                                                                      # Then delay by 30mins/ stay on until turned off 
                                                         
                 except KeyboardInterrupt:
