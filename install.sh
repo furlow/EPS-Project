@@ -10,7 +10,7 @@ init_dir='/etc/init.d/'
 
 #Attempt to install dependencies for natures-alarm
 
-apt-get install bluez python-bluetooth gobject
+#apt-get install bluez python-bluetooth gobject
 
 #Create installation directories
 echo "Creating installation directories"

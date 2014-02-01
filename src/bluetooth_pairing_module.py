@@ -9,7 +9,10 @@ import threading
 from time import sleep
 
 gobject.threads_init()
+<<<<<<< HEAD
 
+=======
+>>>>>>> c03bd31b6bae5aa62bd66006cb7ab5c318d1e899
 
 # The Agent class inherits the dbus.service.Object class, it uses the default
 # initialiser of the parent class dbus.service object
@@ -41,6 +44,11 @@ class bluetooth_pairing(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
+<<<<<<< HEAD
+=======
+	self.mainloop = gobject.MainLoop()
+
+>>>>>>> c03bd31b6bae5aa62bd66006cb7ab5c318d1e899
     
     #This is run by using the start() function for an instance of bluetooth_pairing
     def run(self):
@@ -54,6 +62,7 @@ class bluetooth_pairing(threading.Thread):
 
         adapther_path = manager.DefaultAdapter() #gets the path of the default bluetooth device
         self.adapter = dbus.Interface(self.bus.get_object("org.bluez", adapther_path), "org.bluez.Adapter")
+<<<<<<< HEAD
 
         #mainloop = gobject.MainLoop()
         agent = Agent(self.bus, self.path)
@@ -65,10 +74,28 @@ class bluetooth_pairing(threading.Thread):
         print "Ready to pair"
             while True:
                 sleep(1)
+=======
+
+        agent = Agent(self.bus, self.path)
+
+        self.adapter.Discoverable = True
+        self.adapter.RegisterAgent(self.path,
+                           self.capability)
+                           
+        print "Ready to pair"
+        self.mainloop.run()
+
+    def stop(self):
+	self.mainloop.quit()
+	print "Exited pairing mode"
+>>>>>>> c03bd31b6bae5aa62bd66006cb7ab5c318d1e899
 
 # Need to come up with a way in which the mainloop will quit, using the Thread quit method is okay.
 # However We can run the thread when the button is pressed down for 3 seconds. When a succesfull pair
 # is made, find out what org.bluez.agent method will be called when a succesfull pair has been created
 # we can then call quit() to quit the main loop and thus quit the thread.
+<<<<<<< HEAD
 pair = bluetooth_pairing()
 pair.start()
+=======
+>>>>>>> c03bd31b6bae5aa62bd66006cb7ab5c318d1e899

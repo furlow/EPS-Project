@@ -38,15 +38,11 @@ class bluetooth_comms(threading.Thread):
             		print "waiting for data..."
             		raw_data = self.client_sock.recv(1024)
 
-            		#raw_data = "1910;1912;1;0";
             		self.data[0] = int(raw_data[0:4])
             		self.data[1] = int(raw_data[5:9])
             		self.data[2] = int(raw_data[10])
-            		#light = raw_data[12];
                         self.data[3]= int(raw_data[12])
-            		#self.data[2] = 1 #all the above lines need to be changed to this format
             		self.client_sock.send ("data sent")
-            		#self.data = [int(current_time),int(alarm_time),int(alarm),int(light)]
             		print self.data
 			self.client_sock.close()
 
