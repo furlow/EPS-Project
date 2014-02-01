@@ -35,12 +35,12 @@ def create_device_error(error):
     print "Creating device failed: %s" % (error)
 
 
-#The Bluetooth pairing class inherits the blue threading. Thread class
+#The Bluetooth pairing class inherits the threading.Thread class
 class bluetooth_pairing(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
-	self.mainloop = gobject.MainLoop()
+        self.mainloop = gobject.MainLoop()
 
     
     #This is run by using the start() function for an instance of bluetooth_pairing
