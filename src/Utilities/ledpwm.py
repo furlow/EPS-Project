@@ -1,10 +1,9 @@
-import RPi.GPIO as GPIO 
 from time import sleep
-LED_OUT_PIN = 13
-GPIO.setmode(GPIO.BOARD) 
-GPIO.setwarnings(False)
-GPIO.setup(LED_OUT_PIN, GPIO.OUT, initial= GPIO.LOW)
-light = GPIO.PWM(LED_OUT_PIN, 100)
-light.start(0)
-light.ChangeDutyCycle(1)
-sleep(10)
+
+for dc in range(1,101):
+	dc_f = float(dc) / 100
+	f = open('/dev/pi-blaster', 'w')
+	f.write('27=' + str(dc_f))
+	print('27=' + str(dc_f) + '\n')
+	f.close()
+	sleep(1)

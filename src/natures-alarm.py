@@ -7,37 +7,36 @@ from time import sleep
 from threading import Timer
 from bluetooth_pairing_module import bluetooth_pairing
 
-LED_OUT_PIN = 13
 BUTTON_IN_PIN = 22
-
-
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(BUTTON_IN_PIN, GPIO.IN)
 
 try:
 
         list = [0,0,0,0]
-	list = [114,700,1,0]
+	#list = [513,513,1,0]
 	
 	#Start the pairing thread
-	pairing = bluetooth_pairing()
+	#pairing = bluetooth_pairing()
 
 	#Start the bluetooth communications thread
-        #blue_comms = bluetooth_comms(list)
-        #blue_comms.daemon = True
-        #blue_comms.start()
+        blue_comms = bluetooth_comms(list)
+        blue_comms.daemon = True
+        blue_comms.start()
 
         print "In Main ", list
 
-        alarm1 = alarm(list, BUTTON_IN_PIN, LED_OUT_PIN)
+        alarm1 = alarm(list)
 	totalsecs=0
 
 	print "Current totalsecs is 0"
 
         while 1:
-                sleep(5)
+                sleep(0.1)
                 print "In Main ", list
 
-		if(pairing.isAlive()):
-			print "Pairing Live"
+		#if(pairing.isAlive()):
+		#	print "Pairing Live"
 
 
                 if(list[2] == 1):
@@ -54,25 +53,23 @@ try:
 
                 #if(list[3] == 0):
                 #        alarm1.lightoff()
-                      
+                
 		button_value = GPIO.input(BUTTON_IN_PIN)          #if button is pressed
  		print "Button Value is ", button_value
-		if(button_value == 1):
+
+		if(button_value == 1 and button_value_previous == 0):
 			print "The Button was pressed"
-                        if(list[3] == 1):
-				print "Turning Light off"         #and light is on
-				#pairing.stop()
-				#if(not pairing.isAlive()):
-				#	print "Pairing stopped"
-                                list[3] = 0        #then turn off light
+                        if(list[3] == 0):
+				print "Turning Light on"
+				alarm1.lighton()
+                                list[3] = 1        #then turn off light
                         else:
-				print "Turning Light on"         #but if light is off
-				#pairing = bluetooth_pairing()
-				#pairing.daemon = True
-				#pairing.start()
-                                list[3] = 1        #then turn on light
+				print "Turning Light off"         #but if light is off
+				alarm1.lightoff()
+                                list[3] = 0     #then turn on light
+		button_value_previous = button_value
                 
 except KeyboardInterrupt:
-        #blue_comms.stop()
+        blue_comms.stop()
         alarm1.close()
         raise

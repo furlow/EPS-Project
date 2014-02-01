@@ -17,10 +17,9 @@ class alarm():
 
                 #GPIO.setup(self.BUTTON_IN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
                 
-                pygame.mixer.init(44100,-16,1,4096)                                                                                       # Initiate pygame module.
+                pygame.mixer.init(22050,-16,1,4096)                                                                                       # Initiate pygame module.
                 self.sound = pygame.mixer.Sound("Music/Play Hard.wav")     #need to make track as long as gradual wake up?
-		self.channelA = pygame.mixer.Channel(1)
-		self.channelA.set_volume(0)
+                self.channelA = pygame.mixer.Channel(1)
         
         def lighton(self):                                                   # Channel=13, Frequency=100Hz.
                 self.attiny.write('B')                                                                                                        # Stop PWM                                                                                         # Changes all channels used by script back to inputs.
@@ -84,20 +83,18 @@ class alarm():
 
                 print "In Alarm ", self.list
                 
-                self.channelA.play(self.sound, -1)
-
-		volume_float = 0.0
+                self.channelA.set_volume(0.0)                                                                                                        #test
+                self.channelA.play()
 
                 print "Turning on the LEDs and Audio"
 
                 try:
 			print "writin to the attiny"
         		self.attiny.write('C')
-                     	for volume in range(0, 100, 1):
-				volume_float = volume * 0.01
-				print "volume", volume_float
-                        	self.channelA.set_volume(volume_float)
-                                sleep(1)
+			self.channelA.set_volume(1.0)
+                     	#for volume in range(0, 100, 1):                                      # Use dutycycle of 0,5,10,15,20....100.         IS THIS ':' NEEDED?
+                        #	self.channelA.set_volume(float(volume/100))
+                        #        sleep(1)
                         
                 except KeyboardInterrupt:
                 	self.close()
